@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const App = () => {
   // save clicks of each button to its own state
@@ -8,12 +8,6 @@ const App = () => {
   const [isFeedbackAvail, setIsFeedbackAvail] = useState(false);
 
   const handleClick = (name) => {
-    if (good === 0 && neutral === 0 && bad === 0) {
-      setIsFeedbackAvail(false);
-    } else {
-      setIsFeedbackAvail(true);
-    }
-    
     switch (name) {
       case 'good': return () => setGood(good + 1)
       case 'neutral': return () => setNeutral(neutral + 1)
@@ -21,6 +15,14 @@ const App = () => {
       default: return
     };
   }
+
+  useEffect(() => {
+    if (good === 0 && neutral === 0 && bad === 0) {
+      setIsFeedbackAvail(false);
+    } else {
+      setIsFeedbackAvail(true);
+    }
+  }, [good, neutral, bad])
 
   return (
     <div id="App">
@@ -56,14 +58,16 @@ const Statistics = ({good, neutral, bad}) => {
   }
 
   return (
-    <div id="statistics">
-      <Statistic text="good" total={good} />
-      <Statistic text="neutral" total={neutral} />
-      <Statistic text="bad" total={bad} />
-      <Statistic text="all" total={sum()} />
-      <Statistic text="average" total={avg()} />
-      <Statistic text="positive" total={positivePct()} />
-    </div>
+    <table id="statistics">
+      <tbody>
+        <Statistic text="good" total={good} />
+        <Statistic text="neutral" total={neutral} />
+        <Statistic text="bad" total={bad} />
+        <Statistic text="all" total={sum()} />
+        <Statistic text="average" total={avg()} />
+        <Statistic text="positive" total={positivePct()} />
+      </tbody>
+    </table>
   )
 }
 
@@ -77,7 +81,10 @@ const Button = (props) => {
 
 const Statistic = (props) => {
   return (
-    <div>{props.text} {props.total}</div>
+    <tr>
+      <td>{props.text}</td> 
+      <td>{props.total}</td>
+    </tr>
   )
 }
 
