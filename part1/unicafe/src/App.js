@@ -15,15 +15,7 @@ const App = () => {
     }
   }
 
-  const sum = () => [good, neutral, bad].reduce((a, b) => a + b, 0);
-
-  const avg = () => isNaN(good / sum()) ? 0 : (good - bad) / sum();
-
-  const positivePct = () => {
-    return isNaN(good / sum()) 
-      ? 0 
-      : `${(good / sum()) * 100}%`;
-  }
+  
 
   return (
     <div id="App">
@@ -38,11 +30,8 @@ const App = () => {
         <div>good {good}</div>
         <div>neutral {neutral}</div>
         <div>bad {bad}</div>
-        <Display text="all" total={sum()} />
-        <Display text="average" total={avg()} />
-        <Display text="positive" total={positivePct()} />
-      </div>
-      
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      </div>   
     </div>
   )
 }
@@ -51,6 +40,26 @@ const App = () => {
 // know of useEffect, I can't useState() for total. The good thing is
 // I don't really need to keep track of it, so a temp. calculation
 // is more than enough. 
+const Statistics = ({good, neutral, bad}) => {
+  const sum = () => [good, neutral, bad].reduce((a, b) => a + b, 0);
+
+  const avg = () => isNaN(good / sum()) ? 0 : (good - bad) / sum();
+
+  const positivePct = () => {
+    return isNaN(good / sum()) 
+      ? 0 
+      : `${(good / sum()) * 100}%`;
+  }
+
+  return (
+    <div id="statistics">
+      <Display text="all" total={sum()} />
+      <Display text="average" total={avg()} />
+      <Display text="positive" total={positivePct()} />
+    </div>
+  )
+}
+
 
 const Button = (props) => {
   return (
