@@ -8,13 +8,17 @@ const App = () => {
 
   const handleAdd = (event) => {
     event.preventDefault();
-    console.log('clicked', event)
-    const newContact = {
-      name: newName,
-      id: persons.length + 1
-    };
-    setPersons(persons.concat(newContact));
-    setNewName('');
+    if (persons.find(person => person.name === newName)) {
+      alert(`${newName} is already added to phonebook`);
+      setNewName('');
+    } else {
+      const newContact = {
+        name: newName,
+        id: persons.length + 1
+      };
+      setPersons(persons.concat(newContact));
+      setNewName('');
+    }
   }
 
   const handleNewName = (event) => {
