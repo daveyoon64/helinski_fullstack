@@ -19,9 +19,7 @@ const Country = ({country}) => {
       <div className="flag">
         <img src={country.flag} alt='' style={width} />
       </div>
-      <div>
-        <Weather country={country}/>
-      </div>
+      <Weather country={country}/>
     </div>
   )
 }

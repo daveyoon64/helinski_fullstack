@@ -4,12 +4,7 @@ import axios from 'axios'
 
 const Weather = ({country}) => {
   const [weather, setWeather] = useState({
-    current: {
-      temperature: '0',
-      weather_icons: [],
-      wind_speed: 0,
-      wind_dir: 'N'
-    }
+    current: null
   })
 
   useEffect(() => {
@@ -23,6 +18,10 @@ const Weather = ({country}) => {
       })
   }, [country.capital])
 
+  if (weather.current === null) {
+    return (<div>Loading Weather of Capial...</div>)
+  }
+
   return (
     <div>
       <h2>Weather in {country.capital}</h2>
@@ -30,7 +29,7 @@ const Weather = ({country}) => {
       <img src={weather.current.weather_icons[0]} alt=''/>
       <div><b>wind:</b> {weather.current.wind_speed} mph direction {weather.current.wind_dir}</div>
     </div>
-  )
+  );
 }
 
-export default Weather
+export default Weather 
