@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import Country from './components/Country'
 import CountryForm from './components/CountryForm'
+import CountryList from './components/CountryList'
 
 import axios from 'axios'
-import {v4 as uuidv4} from 'uuid'
 
 function App() {
   const [countries, setCountries] = useState([])
@@ -25,6 +25,10 @@ function App() {
     setNewCountry(evt.target.value)
   }
 
+  const handleCountryShow = (evt) => { 
+    setNewCountry(evt.target.parentElement.childNodes[0].data)
+  }
+
   return (
     <div className="App">
       <CountryForm value={newCountry} linkHandler={handleCountryInput}/>
@@ -33,7 +37,7 @@ function App() {
           ? <div>Too many matches, specify another filter</div>
           : displayCountries.length === 1
             ? <Country country={displayCountries[0]}/>
-            : displayCountries.map(country => <div key={uuidv4()}>{country.name}</div>)}
+            : <CountryList countries={displayCountries} linkHandler={handleCountryShow}/>}
       </div>
     </div>
   );
