@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Filter from './components/Filter';
-import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
+import React, { useEffect, useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import phonebookService from './services/phonebook'
 
 import axios from 'axios';
 
@@ -13,10 +14,10 @@ const App = () => {
   const [ isSearching, setIsSearching ] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    phonebookService
+      .getAll()
+      .then(entries => {
+        setPersons(entries)
       })
   }, [])
 
@@ -35,12 +36,13 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1
       };
-      axios
-        .post('http://localhost:3001/persons', newContact)
+      
+      phonebookService
+        .addPerson(newContact)
         .then(response => {
-          setPersons(persons.concat(newContact));
-          setNewName('');
-          setNewNumber('');
+          setPersons(persons.concat(newContact))
+          setNewName('')
+          setNewNumber('')
         })
     }
   }
