@@ -4,7 +4,7 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import phonebookService from './services/phonebook'
 
-import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]); 
@@ -34,7 +34,7 @@ const App = () => {
       const newContact = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
+        id: uuidv4()
       };
       
       phonebookService
@@ -43,6 +43,20 @@ const App = () => {
           setPersons(persons.concat(newContact))
           setNewName('')
           setNewNumber('')
+        })
+    }
+  }
+
+  const handleDelete = (event) => {
+    const name = event.target.parentNode.childNodes[0].data
+    const id = event.target.parentNode.id
+    if (window.confirm(`Delete ${name}?`)) {
+      phonebookService
+        .deletePerson(id)
+        .then(status => {
+          const persons_copy = [...persons]
+          persons_copy.splice(persons_copy.findIndex(person => person.id === id), 1)
+          setPersons(persons_copy)
         })
     }
   }
@@ -74,7 +88,7 @@ const App = () => {
         numberHandler={handleNewNumber}
         addHandler={handleAdd}/>
       <h2>Numbers</h2>
-      <Persons list={contactList}/>
+      <Persons list={contactList} handleDelete={handleDelete}/>
     </div>
   )
 }
