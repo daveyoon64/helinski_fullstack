@@ -18,10 +18,10 @@ const Persons = ({list, handleDelete}) => {
 
 const Contact = ({name, number, id, handleDelete}) => {
   return (
-    <div id={id} onClick={handleDelete}>
+    <li className="person-list" id={id} onClick={handleDelete}>
       {name} {number} 
       <button>delete</button>
-    </div>
+    </li>
     
   )
 }

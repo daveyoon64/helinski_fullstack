@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import phonebookService from './services/phonebook'
+import Notification from './components/Notification'
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,6 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchValue, setSearchValue ] = useState('');
   const [ isSearching, setIsSearching ] = useState(false);
+  const [ successMessage, setSuccessMessage ] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -40,6 +42,7 @@ const App = () => {
               ...persons.slice(index + 1)
             ]
             setPersons(persons_copy)
+            setSuccessMessage(`Changed ${found_person.name}'s number`)
             setNewName('')
             setNewNumber('')
           })
@@ -55,6 +58,7 @@ const App = () => {
         .addPerson(newContact)
         .then(response => {
           setPersons(persons.concat(newContact))
+          setSuccessMessage(`Added ${newContact.name}`)
           setNewName('')
           setNewNumber('')
         })
@@ -93,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage}/>
       <Filter searchValue={searchValue} linkHandler={handleFilter}/>
       <h2>Add a new</h2>
       <PersonForm 
