@@ -27,9 +27,23 @@ const App = () => {
 
   const handleAdd = (event) => {
     event.preventDefault();
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName('');
+    const found_person = persons.find(person => person.name === newName)
+    if (found_person) {
+      if (window.confirm(`${found_person.name} is already added to phonebook, replace old number with new one?`)) {
+        phonebookService
+          .updatePerson(found_person, newNumber)
+          .then(() => {
+            const index = persons.findIndex(item => item.name === found_person.name)
+            const persons_copy = [
+              ...persons.slice(0, index),
+              { ...found_person, number: newNumber },
+              ...persons.slice(index + 1)
+            ]
+            setPersons(persons_copy)
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     } else {
       const newContact = {
         name: newName,

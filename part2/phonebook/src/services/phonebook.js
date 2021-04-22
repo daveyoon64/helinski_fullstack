@@ -18,5 +18,16 @@ const deletePerson = (id) => {
   return request.then(response => response.status)
 }
 
-const phonebook = { getAll, addPerson, deletePerson }
+const updatePerson = (person, new_number) => {
+  const url = baseUrl + `/${person.id}`
+
+  const data = {
+    name: person.name,
+    number: new_number
+  }
+  const request = axios.put(url, data)
+  return request.then(response => response)
+}
+
+const phonebook = { getAll, addPerson, deletePerson, updatePerson }
 export default phonebook
