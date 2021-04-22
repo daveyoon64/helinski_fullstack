@@ -14,6 +14,15 @@ const App = () => {
   const [ searchValue, setSearchValue ] = useState('');
   const [ isSearching, setIsSearching ] = useState(false);
   const [ successMessage, setSuccessMessage ] = useState(null)
+  const [ style, setStyle] = useState({})
+
+  const successStyle = {
+    color: 'green'
+  }
+
+  const errorStyle = {
+    color: 'red'
+  }
 
   useEffect(() => {
     phonebookService
@@ -46,6 +55,10 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(error => {
+            setSuccessMessage(`Information of ${found_person.name} has already been removed from the server`)
+            setStyle(errorStyle)
+          })
       }
     } else {
       const newContact = {
@@ -59,6 +72,7 @@ const App = () => {
         .then(response => {
           setPersons(persons.concat(newContact))
           setSuccessMessage(`Added ${newContact.name}`)
+          setStyle(successStyle)
           setNewName('')
           setNewNumber('')
         })
@@ -97,7 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage}/>
+      <Notification message={successMessage} style={style}/>
       <Filter searchValue={searchValue} linkHandler={handleFilter}/>
       <h2>Add a new</h2>
       <PersonForm 
