@@ -24,6 +24,11 @@
       "name": "Jimmy Smits",
       "number": "777-11111",
       "id": "bcdf8b9a-6a77-4f97-9374-73371d32f1f9"
+    },
+    {
+      "name": "Rick Smits",
+      "number": "123-234-5431",
+      "id": "5fc0e593-8b41-4027-9064-05c6ac82330b"
     }
   ]
 }
