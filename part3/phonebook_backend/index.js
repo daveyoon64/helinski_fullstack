@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const persons = [
+let persons = [
     {
       "name": "Dan Abramov",
       "number": "12-43-234345",
@@ -53,6 +53,24 @@ app.get('/api/persons/:id', (request, response) => {
 app.get('/info', (request, response) => {
   const date = Date.now()
   response.send(`Phonebook has info for ${persons.length} people <br/><br/> ${new Date().toString()}` )
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  
+  persons = persons.filter(person => person.id !== id)
+  // not entirely sure why this doesn't work
+  // let person_index = persons.findIndex( person => {
+  //   console.log(person)
+  //   console.log('does this work?', typeof person.id, person.id === id);
+  //   person.id === id;
+  // })
+  // console.log(person_index, persons[person_index])
+  // if (person_index > 0) {
+  //   persons.splice(person_index, 1)
+  // }
+
+  response.status(204).end()
 })
 
 const PORT = 3001
