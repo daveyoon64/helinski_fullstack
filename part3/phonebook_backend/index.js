@@ -1,5 +1,8 @@
+const { request, response } = require('express');
 const express = require('express')
 const app = express()
+
+app.use(express.json())
 
 let persons = [
     {
@@ -71,6 +74,25 @@ app.delete('/api/persons/:id', (request, response) => {
   // }
 
   response.status(204).end()
+})
+
+const generateRandomInt = (min, max) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+// do I need this? ?:name-:number
+app.post('/api/persons', (req, res) => {
+  const person = req.body
+  const newId = generateRandomInt(1, 10000000)
+  const newPerson = {
+    name: person.name,
+    number: person.number,
+    id: newId
+  }
+  persons = persons.concat(newPerson)
+  res.status(204).json(person)
 })
 
 const PORT = 3001
