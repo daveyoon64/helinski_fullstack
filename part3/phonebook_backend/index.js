@@ -64,11 +64,8 @@ app.delete('/api/persons/:id', (request, response) => {
   persons = persons.filter(person => person.id !== id)
   // not entirely sure why this doesn't work
   // let person_index = persons.findIndex( person => {
-  //   console.log(person)
-  //   console.log('does this work?', typeof person.id, person.id === id);
   //   person.id === id;
   // })
-  // console.log(person_index, persons[person_index])
   // if (person_index > 0) {
   //   persons.splice(person_index, 1)
   // }
@@ -82,17 +79,24 @@ const generateRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min)
 }
 
-// do I need this? ?:name-:number
 app.post('/api/persons', (req, res) => {
   const person = req.body
   const newId = generateRandomInt(1, 10000000)
-  const newPerson = {
-    name: person.name,
-    number: person.number,
-    id: newId
+
+  if (!person.name || !person.number) {
+    res.status(400).json({error: 'name or number must be present'})
   }
-  persons = persons.concat(newPerson)
-  res.status(204).json(person)
+  else if (persons.find(item => item.name === person.name)) {
+    res.status(400).json({error: 'name must be unique'})
+  } else {
+    const newPerson = {
+      name: person.name,
+      number: person.number,
+      id: newId
+    }
+    persons = persons.concat(newPerson)
+    res.status(204).json(person)
+  }
 })
 
 const PORT = 3001
