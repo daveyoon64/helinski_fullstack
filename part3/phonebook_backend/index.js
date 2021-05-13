@@ -5,8 +5,8 @@ const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('build'))
 app.use(cors())
-
 
 logger.token('payload', function (req, res) { return JSON.stringify({name: req.body.name, number: req.body.number}) })
 app.use(logger(':method :url :status :res[content-length] - :response-time ms :payload', {

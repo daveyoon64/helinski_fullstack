@@ -20,3 +20,12 @@ Content-type: application/json
     "name": "TEST",
     "number": ""
 }
+
+###
+POST https://boiling-brook-83789.herokuapp.com/api/persons
+Content-type: application/json
+
+{
+    "name": "Jim Carrery",
+    "number": "345-3452-345"
+}
