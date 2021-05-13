@@ -5,8 +5,6 @@ import Persons from './components/Persons'
 import phonebookService from './services/phonebook'
 import Notification from './components/Notification'
 
-import { v4 as uuidv4 } from 'uuid';
-
 const App = () => {
   const [ persons, setPersons ] = useState([]); 
   const [ newName, setNewName ] = useState('');
@@ -64,7 +62,6 @@ const App = () => {
       const newContact = {
         name: newName,
         number: newNumber,
-        id: uuidv4()
       };
       
       phonebookService

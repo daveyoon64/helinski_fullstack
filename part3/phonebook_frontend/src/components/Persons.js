@@ -3,10 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Persons = ({list, handleDelete}) => {
   return (
-    <div key={uuidv4()}>
+    <div>
       {list.map((person) => {
-        return <Contact key={person.id}
-                  id={person.id}
+        return <Contact key={uuidv4()}
                   name={person.name} 
                   number={person.number} 
                   handleDelete={handleDelete}/>
@@ -16,9 +15,9 @@ const Persons = ({list, handleDelete}) => {
   )
 }
 
-const Contact = ({name, number, id, handleDelete}) => {
+const Contact = ({name, number, handleDelete}) => {
   return (
-    <li className="person-list" id={id} onClick={handleDelete}>
+    <li className="person-list" onClick={handleDelete}>
       {name} {number} 
       <button>delete</button>
     </li>
