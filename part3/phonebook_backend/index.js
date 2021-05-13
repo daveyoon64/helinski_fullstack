@@ -1,9 +1,11 @@
 const { request, response } = require('express');
 const express = require('express')
 const logger = require('morgan')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 
 logger.token('payload', function (req, res) { return JSON.stringify({name: req.body.name, number: req.body.number}) })
@@ -18,32 +20,32 @@ let persons = [
     {
       "name": "Dan Abramov",
       "number": "12-43-234345",
-      "id": 1
+      "id": 65478765
     },
     {
       "name": "Rickard James",
       "number": "12412412-231",
-      "id": 2
+      "id": 34523
     },
     {
       "name": "Sinclair O-Reilly",
       "number": "543-234-1345",
-      "id": 3
+      "id": 6456453
     },
     {
       "name": "Pupae are icky",
       "number": "323421342143",
-      "id": 4
+      "id": 918238
     },
     {
       "name": "Jimmy Smits",
       "number": "777-11111",
-      "id": 5
+      "id": 12351
     },
     {
       "name": "Rick Smits",
       "number": "123-234-5431",
-      "id": 6
+      "id": 6756345
     }
 ];
 
@@ -70,16 +72,7 @@ app.get('/info', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  
   persons = persons.filter(person => person.id !== id)
-  // not entirely sure why this doesn't work
-  // let person_index = persons.findIndex( person => {
-  //   person.id === id;
-  // })
-  // if (person_index > 0) {
-  //   persons.splice(person_index, 1)
-  // }
-
   response.status(204).end()
 })
 
@@ -105,11 +98,11 @@ app.post('/api/persons', (req, res) => {
       id: newId
     }
     persons = persons.concat(newPerson)
-    res.status(204).json(person)
+    res.status(204).json(persons)
   }
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`)
 })
