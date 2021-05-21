@@ -60,15 +60,23 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find((person) => person.id === id )
+  // const id = Number(request.params.id)
+  // const person = persons.find((person) => person.id === id )
 
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
-  
+  Person.findById(request.params.id)
+    .then(person => {
+      response.json(person)
+    })
+    .catch(error => {
+      console.log('Person not found', error)
+      response.status(404).end()  
+    })
+
+  // if (person) {
+  //   response.json(person)
+  // } else {
+  //   response.status(404).end()
+  // }
 })
 
 app.get('/info', (request, response) => {
@@ -89,23 +97,17 @@ const generateRandomInt = (min, max) => {
 }
 
 app.post('/api/persons', (req, res) => {
-  const person = req.body
+  const body = req.body
   const newId = generateRandomInt(1, 10000000)
 
-  if (!person.name || !person.number) {
-    res.status(400).json({error: 'name or number must be present'})
-  }
-  else if (persons.find(item => item.name === person.name)) {
-    res.status(400).json({error: 'name must be unique'})
-  } else {
-    const newPerson = {
-      name: person.name,
-      number: person.number,
+  const person = new Person({
+      name: body.name,
+      number: body.number,
       id: newId
-    }
-    persons = persons.concat(newPerson)
-    res.status(204).json(persons)
-  }
+  })
+  person.save().then(newPerson => {
+    res.json(newPerson)
+  })
 })
 
 const PORT = process.env.PORT || 3001
